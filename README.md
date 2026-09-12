@@ -180,8 +180,6 @@ Toàn bộ logic nghiệp vụ được xử lý tập trung tại tầng API, �
 
 ## Nhóm thực hiện
 
-## Nhóm thực hiện
-
 **Nhóm 18 — Đồ án môn NT106**
 
 | STT | MSSV | Họ và tên | Vai trò / Nhiệm vụ |
