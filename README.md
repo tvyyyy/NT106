@@ -9,14 +9,14 @@
 
 ## Mục lục
 
-- [Giới thiệu](#giới-thiệu)
-- [Đối tượng người dùng](#đối-tượng-người-dùng)
-- [Tính năng chính](#tính-năng-chính)
-- [Công nghệ sử dụng](#công-nghệ-sử-dụng)
-- [Kiến trúc tổng quan](#kiến-trúc-tổng-quan)
-- [Yêu cầu công cụ và môi trường](#yêu-cầu-công-cụ-và-môi-trường)
-- [Hướng dẫn cài đặt và cấu hình môi trường](#hướng-dẫn-cài-đặt-và-cấu-hình-môi-trường)
-- [Nhóm thực hiện](#nhóm-thực-hiện)
+[Giới thiệu](#giới-thiệu)  
+[Đối tượng người dùng](#đối-tượng-người-dùng) 
+[Tính năng chính](#tính-năng-chính) 
+[Công nghệ sử dụng](#công-nghệ-sử-dụng) 
+[Kiến trúc tổng quan](#kiến-trúc-tổng-quan) 
+[Yêu cầu công cụ và môi trường](#yêu-cầu-công-cụ-và-môi-trường) 
+[Hướng dẫn cài đặt và cấu hình môi trường](#hướng-dẫn-cài-đặt-và-cấu-hình-môi-trường) 
+[Nhóm thực hiện](#nhóm-thực-hiện) 
 
 ---
 
@@ -187,7 +187,3 @@ Toàn bộ logic nghiệp vụ được xử lý tập trung tại tầng API, �
 | 1 | 24522071 | Nguyễn Thúy Vy | Leader / Backend & CSDL |
 | 2 | 25521179 | Nguyễn Ngọc Kim Ngân | Frontend & Báo cáo |
 ---
-
-## Ghi chú
-
-Tài liệu này mô tả phạm vi và định hướng kỹ thuật tổng thể của đồ án. Chi tiết triển khai từng giai đoạn được trình bày trong các tài liệu hướng dẫn riêng biệt đi kèm.
