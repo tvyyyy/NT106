@@ -1,12 +1,5 @@
 # Ứng Dụng Quản Lý Bán Trà Sữa
 
-<p align="center">
-  <img src="https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt=".NET 8.0" />
-  <img src="https://img.shields.io/badge/C%23-WinForms-239120?style=flat-square&logo=csharp&logoColor=white" alt="C# WinForms" />
-  <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="MySQL 8.0" />
-  <img src="https://img.shields.io/badge/SignalR-Realtime-black?style=flat-square" alt="SignalR" />
-  <img src="https://img.shields.io/badge/Auth-JWT%20%2B%20BCrypt-F7B93E?style=flat-square" alt="JWT + BCrypt" />
-</p>
 
 <p align="center">
   Hệ thống quản lý bán trà sữa — từ đặt hàng, thanh toán đến quản lý menu và đơn hàng theo thời gian thực.
@@ -45,26 +38,26 @@
 ## Tính năng chính
 
 **Tài khoản và bảo mật**
-- [x] Tạo tài khoản, đăng nhập, quên mật khẩu, sửa mật khẩu
-- [x] Chỉnh sửa hồ sơ cá nhân
+Tạo tài khoản, đăng nhập, quên mật khẩu, sửa mật khẩu 
+Chỉnh sửa hồ sơ cá nhân 
 
 **Quản lý menu**
-- [x] Tạo menu, chỉnh sửa menu *(dành riêng cho tài khoản đặc biệt)*
-- [x] Tìm kiếm và lọc thông tin đồ uống
-- [x] Xem chi tiết đồ uống
+Tạo menu, chỉnh sửa menu *(dành riêng cho tài khoản đặc biệt)* 
+Tìm kiếm và lọc thông tin đồ uống 
+Xem chi tiết đồ uống 
 
 **Đặt hàng và thanh toán**
-- [x] Tạo, thêm, sửa, hủy đơn hàng
-- [x] Chọn chỗ ngồi hoặc mang về
-- [x] Áp mã giảm giá và khuyến mãi
-- [x] Thanh toán, gửi hóa đơn
+Tạo, thêm, sửa, hủy đơn hàng 
+Chọn chỗ ngồi hoặc mang về 
+Áp mã giảm giá và khuyến mãi 
+Thanh toán, gửi hóa đơn 
 
 **Quản lý và theo dõi**
-- [x] Quản lý trạng thái đơn hàng
-- [x] Lịch sử đặt hàng
+Quản lý trạng thái đơn hàng 
+Lịch sử đặt hàng 
 
 **Tương tác khách hàng**
-- [x] Đánh giá, liên hệ, góp ý
+Đánh giá, liên hệ, góp ý 
 
 ---
 
@@ -87,24 +80,16 @@
 Hệ thống được tổ chức theo mô hình client-server, trong đó ứng dụng phía người dùng đóng vai trò client giao tiếp với backend thông qua các endpoint RESTful:
 
 ```text
-┌───────────────────────────────────┐
-│  Ứng dụng WinForms (Desktop/Mobile)│
-└────────────────┬────────────────────┘
-                 │
-                 ▼
-┌───────────────────────────────────┐
-│     ASP.NET Core Web API (.NET 8.0) │
-│  ┌───────────┬─────────────┬───────┐ │
-│  │  Xác thực  │ SignalR Hub │MailKit│ │
-│  │(JWT/BCrypt)│ (Thông báo  │Service│ │
-│  │           │ đơn hàng)   │(Email)│ │
-│  └───────────┴─────────────┴───────┘ │
-└────────────────┬────────────────────┘
-                 │
-                 ▼
-        ┌───────────────────┐
-        │   MySQL Database    │
-        └───────────────────┘
+client/ (WinForms Desktop/Mobile)
+│
+├── HTTP REST ────► backend/ (ASP.NET Core Web API .NET 8.0)
+│                      ├── Xác thực (JWT / BCrypt)
+│                      └── MailKit Service (Email)
+│                      │
+└── SignalR ──────► server/ (ASP.NET Core SignalR - Thông báo đơn hàng)
+                       │
+                       ▼
+                 MySQL Database
 ```
 
 Toàn bộ logic nghiệp vụ được xử lý tập trung tại tầng API, đảm bảo tính nhất quán dữ liệu và khả năng mở rộng khi ứng dụng phát triển thêm các kênh giao diện khác trong tương lai. SignalR đảm nhiệm việc đẩy thông báo trạng thái đơn hàng theo thời gian thực đến người dùng mà không cần làm mới thủ công, trong khi MailKit chịu trách nhiệm gửi hóa đơn điện tử sau khi giao dịch hoàn tất.
@@ -193,9 +178,14 @@ Toàn bộ logic nghiệp vụ được xử lý tập trung tại tầng API, �
 
 ## Nhóm thực hiện
 
-**Nhóm 18** — Đồ án môn NT106
-24522071 - Nguyễn Thúy Vy
-25521179 - Nguyễn Ngọc Kim Ngân
+## Nhóm thực hiện
+
+**Nhóm 18 — Đồ án môn NT106**
+
+| STT | MSSV | Họ và tên | Vai trò / Nhiệm vụ |
+| :---: | :---: | :--- | :--- |
+| 1 | 24522071 | Nguyễn Thúy Vy | Leader / Backend & CSDL |
+| 2 | 25521179 | Nguyễn Ngọc Kim Ngân | Frontend & Báo cáo |
 ---
 
 ## Ghi chú
