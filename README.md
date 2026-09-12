@@ -9,14 +9,16 @@
 
 ## Mục lục
 
-[Giới thiệu](#giới-thiệu)  
-[Đối tượng người dùng](#đối-tượng-người-dùng) 
-[Tính năng chính](#tính-năng-chính) 
-[Công nghệ sử dụng](#công-nghệ-sử-dụng) 
-[Kiến trúc tổng quan](#kiến-trúc-tổng-quan) 
-[Yêu cầu công cụ và môi trường](#yêu-cầu-công-cụ-và-môi-trường) 
-[Hướng dẫn cài đặt và cấu hình môi trường](#hướng-dẫn-cài-đặt-và-cấu-hình-môi-trường) 
-[Nhóm thực hiện](#nhóm-thực-hiện) 
+| STT | Nội dung chính | Liên kết |
+| :---: | :--- | :---: |
+| 1 | Giới thiệu | [Xem chi tiết](#gioi-thieu) |
+| 2 | Đối tượng người dùng | [Xem chi tiết](#doi-tuong-nguoi-dung) |
+| 3 | Tính năng chính | [Xem chi tiết](#tinh-nang-chinh) |
+| 4 | Công nghệ sử dụng | [Xem chi tiết](#cong-nghe-su-dung) |
+| 5 | Kiến trúc tổng quan | [Xem chi tiết](#kien-truc-tong-quan) |
+| 6 | Yêu cầu công cụ và môi trường | [Xem chi tiết](#yeu-cau-cong-cu-va-moi-truong) |
+| 7 | Hướng dẫn cài đặt và cấu hình môi trường | [Xem chi tiết](#huong-dan-cai-dat-va-cau-hinh-moi-truong) |
+| 8 | Nhóm thực hiện | [Xem chi tiết](#nhom-thuc-hien) |
 
 ---
 
