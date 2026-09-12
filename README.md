@@ -39,26 +39,26 @@
 
 ## Tính năng chính
 
-**Tài khoản và bảo mật**
+**Tài khoản và bảo mật:** 
 Tạo tài khoản, đăng nhập, quên mật khẩu, sửa mật khẩu 
 Chỉnh sửa hồ sơ cá nhân 
 
-**Quản lý menu**
+**Quản lý menu:** 
 Tạo menu, chỉnh sửa menu *(dành riêng cho tài khoản đặc biệt)* 
 Tìm kiếm và lọc thông tin đồ uống 
 Xem chi tiết đồ uống 
 
-**Đặt hàng và thanh toán**
+**Đặt hàng và thanh toán:** 
 Tạo, thêm, sửa, hủy đơn hàng 
 Chọn chỗ ngồi hoặc mang về 
 Áp mã giảm giá và khuyến mãi 
 Thanh toán, gửi hóa đơn 
 
-**Quản lý và theo dõi**
+**Quản lý và theo dõi:** 
 Quản lý trạng thái đơn hàng 
 Lịch sử đặt hàng 
 
-**Tương tác khách hàng**
+**Tương tác khách hàng:** 
 Đánh giá, liên hệ, góp ý 
 
 ---
