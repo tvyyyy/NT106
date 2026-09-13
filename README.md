@@ -77,18 +77,19 @@ Lịch sử đặt hàng
 
 ---
 ## Cấu trúc thư mục 
-src/
-├── Shared/
-├── Server.Api/
-│   ├── Controllers/
-│   ├── Services/
-│   ├── Models/
-│   ├── Data/
-│   └── Hubs/
-├── Client.Customer/
-└── Client.Staff/
-docs/
-database/
+
+├── src/
+│   ├── Shared/             
+│   ├── Server.Api/         
+│   │   ├── Controllers/    
+│   │   ├── Services/       
+│   │   ├── Models/         
+│   │   ├── Data/           
+│   │   └── Hubs/           
+│   ├── Client.Customer/    
+│   └── Client.Staff/       
+├── docs/                   
+└── database/               
 
 ## Kiến trúc tổng quan
 
