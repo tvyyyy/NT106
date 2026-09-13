@@ -76,6 +76,19 @@ Lịch sử đặt hàng
 | Xác thực và bảo mật | `JWT` (JSON Web Token), `BCrypt` |
 
 ---
+## Cấu trúc thư mục 
+src/
+├── Shared/
+├── Server.Api/
+│   ├── Controllers/
+│   ├── Services/
+│   ├── Models/
+│   ├── Data/
+│   └── Hubs/
+├── Client.Customer/
+└── Client.Staff/
+docs/
+database/
 
 ## Kiến trúc tổng quan
 
