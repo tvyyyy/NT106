@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/BobaShop.Application/BobaShop.Application.csproj" />
+    <Project Path="src/Core/BobaShop.Domain/BobaShop.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/BobaShop.Infrastructure/BobaShop.Infrastructure.csproj" />
+    <Project Path="src/Infrastructure/BobaShop.Persistence/BobaShop.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/">
+    <Project Path="src/Presentation/BobaShop.WebAPI/BobaShop.WebAPI.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/Clients/">
+    <Project Path="src/Presentation/Clients/BobaShop.AdminApp/BobaShop.AdminApp.csproj" />
+    <Project Path="src/Presentation/Clients/BobaShop.ClientNetwor/BobaShop.ClientNetwor.csproj" />
+    <Project Path="src/Presentation/Clients/BobaShop.ClientNetworkLogic/BobaShop.ClientNetworkLogic.csproj" />
+    <Project Path="src/Presentation/Clients/BobaShop.CustomerApp/BobaShop.CustomerApp.csproj" />
+  </Folder>
+</Solution>
