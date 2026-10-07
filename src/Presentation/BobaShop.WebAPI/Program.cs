@@ -1,4 +1,10 @@
+using BobaShop.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Thiếu ConnectionStrings:DefaultConnection");
+builder.Services.AddPersistence(connectionString);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

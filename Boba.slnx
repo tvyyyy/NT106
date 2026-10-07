@@ -13,7 +13,6 @@
   </Folder>
   <Folder Name="/src/Presentation/Clients/">
     <Project Path="src/Presentation/Clients/BobaShop.AdminApp/BobaShop.AdminApp.csproj" />
-    <Project Path="src/Presentation/Clients/BobaShop.ClientNetwor/BobaShop.ClientNetwor.csproj" />
     <Project Path="src/Presentation/Clients/BobaShop.ClientNetworkLogic/BobaShop.ClientNetworkLogic.csproj" />
     <Project Path="src/Presentation/Clients/BobaShop.CustomerApp/BobaShop.CustomerApp.csproj" />
   </Folder>
