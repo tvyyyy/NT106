@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BobaShop - Trang Chủ Đồ Án NT106</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #fdfaf6; color: #333; }
+
+        /* Banner Đầu Trang */
+        .hero-banner {
+            height: 50vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1558857563-b371033873b8?q=80&w=1200') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        .hero-banner h1 { font-size: 2.8rem; margin-bottom: 10px; }
+
+        /* Grid 4 Ô (Bỏ phần ở giữa) */
+        .grid-container {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            /* Trạng thái ẩn ban đầu để cuộn xuống mới popup */
+            opacity: 0;
+            transform: translateY(50px) scale(0.96);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .card:hover img { transform: scale(1.05); }
+
+        .card-content { padding: 20px; text-align: center; }
+        .card-content h3 { font-size: 1.4rem; color: #4a2c11; margin-bottom: 8px; }
+        .card-content p { color: #666; font-size: 0.95rem; margin-bottom: 15px; }
+
+        .btn-link {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: #b3282d;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-link:hover { background-color: #8c1e22; }
+
+        /* Class CSS khi scroll hiển thị popup */
+        .card.popup-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        @media (max-width: 768px) { .grid-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <section class="hero-banner">
+        <div>
+            <h1>BOBASHOP SYSTEM</h1>
+            <p>Hệ thống đặt trà sữa đồ án NT106</p>
+        </div>
+    </section>
+
+    <!-- Layout 4 Ô (2 trên, 2 dưới) -->
+    <main class="grid-container">
+        <!-- Ô 1 (Trên - Trái) -->
+        <div class="card reveal-card">
+            <img src="https://images.unsplash.com/photo-1541658016709-82535e94bc69?q=80&w=600" alt="Menu">
+            <div class="card-content">
+                <h3>THỰC ĐƠN ĐẶC BIỆT</h3>
+                <p>Khám phá các loại trà sữa và topping phong phú của BobaShop.</p>
+                <a href="#" class="btn-link">Xem Menu</a>
+            </div>
+        </div>
+
+        <!-- Ô 2 (Trên - Phải) -->
+        <div class="card reveal-card">
+            <img src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?q=80&w=600" alt="Khuyến Mãi">
+            <div class="card-content">
+                <h3>TIN TỨC & ƯU ĐÃI</h3>
+                <p>Cập nhật mã giảm giá Voucher cực hot áp dụng ngay khi đặt đơn.</p>
+                <a href="#" class="btn-link">Săn Voucher</a>
+            </div>
+        </div>
+
+        <!-- Ô 3 (Dưới - Trái) -->
+        <div class="card reveal-card">
+            <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=600" alt="Đặt Hàng">
+            <div class="card-content">
+                <h3>ĐẶT HÀNG TẬN NƠI</h3>
+                <p>Trải nghiệm đặt hàng trực tuyến nhanh chóng với thanh toán PayOS.</p>
+                <a href="#" class="btn-link">Đặt Hàng Ngay</a>
+            </div>
+        </div>
+
+        <!-- Ô 4 (Dưới - Phải) -->
+        <div class="card reveal-card">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=600" alt="Về Chúng Tôi">
+            <div class="card-content">
+                <h3>NGUỒN GỐC RA ĐỜI</h3>
+                <p>Tìm hiểu về hành trình xây dựng hệ thống quản lý cửa hàng trà sữa.</p>
+                <a href="#" class="btn-link">Tìm Hiểu Thêm</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- JS cuộn chuột bật Popup -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.reveal-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('popup-visible');
+                        }, index * 120);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            cards.forEach(card => observer.observe(card));
+        });
+    </script>
+</body>
+</html>
