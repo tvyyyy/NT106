@@ -2,28 +2,26 @@ using BobaShop.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Cấu hình kết nối Cơ sở dữ liệu PostgreSQL[cite: 2]
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Thiếu ConnectionStrings:DefaultConnection");
-builder.Services.AddPersistence(connectionString);
-
-// 2. Cấu hình Controllers & OpenApi chuẩn của .NET
+// 1. Cấu hình Controllers & Swagger
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// 3. Cấu hình Middleware Pipeline
-if (app.Environment.IsDevelopment())
+// 2. Cấu hình Middleware Pipeline
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.MapOpenApi();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "BobaShop API v1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseHttpsRedirection();
 
-// 4. CẤU HÌNH HIỆN TRANG WEB INDEX.HTML
-app.UseDefaultFiles(); // Tự động load file index.html trong wwwroot
-app.UseStaticFiles();  // Cho phép load file tĩnh HTML/CSS/JS
+// 3. Cấu hình phục vụ file tĩnh (wwwroot / index.html)
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseAuthorization();
 app.MapControllers();
