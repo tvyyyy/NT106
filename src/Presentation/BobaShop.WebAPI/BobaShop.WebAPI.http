@@ -1,6 +1,13 @@
 @BobaShop.WebAPI_HostAddress = http://localhost:5227
 
-GET {{BobaShop.WebAPI_HostAddress}}/weatherforecast/
+POST {{BobaShop.WebAPI_HostAddress}}/api/firebase/register
+Content-Type: application/json
+
+{ "username": "demo", "email": "demo@example.com" }
+
+###
+
+GET {{BobaShop.WebAPI_HostAddress}}/api/firebase/users
 Accept: application/json
 
 ###

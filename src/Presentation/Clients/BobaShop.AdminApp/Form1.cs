@@ -80,8 +80,7 @@ namespace BobaShop.AdminApp
             try
             {
                 var userRequest = new { Username = username, Email = email };
-                var response = await _httpClient.PostAsJsonAsync("api/register", userRequest);
-
+                var response = await _httpClient.PostAsJsonAsync("api/firebase/register", userRequest);
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show($"Đã tạo tài khoản '{username}' thành công trên Firebase!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
