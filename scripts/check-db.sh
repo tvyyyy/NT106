@@ -24,12 +24,12 @@ expect_fail() {
 }
 
 echo "== 1. Cấu trúc và ràng buộc =="
-expect "Số bảng" 10 "$(q <<'SQL'
+expect "Số bảng" 11 "$(q <<'SQL'
 SELECT count(*) FROM information_schema.tables
 WHERE table_schema='public' AND table_name <> '__EFMigrationsHistory';
 SQL
 )"
-expect "Khóa chính (PK, gồm bảng history)" 11 "$(q <<'SQL'
+expect "Khóa chính (PK, gồm bảng history)" 12 "$(q <<'SQL'
 SELECT count(*) FROM pg_constraint
 WHERE connamespace='public'::regnamespace AND contype='p';
 SQL
@@ -69,6 +69,11 @@ SQL
 expect "Feedbacks có cột ProductID" 1 "$(q <<'SQL'
 SELECT count(*) FROM information_schema.columns
 WHERE table_name='Feedbacks' AND column_name='ProductID';
+SQL
+)"
+expect "PasswordResetTokens đủ 6 cột" 6 "$(q <<'SQL'
+SELECT count(*) FROM information_schema.columns
+WHERE table_name='PasswordResetTokens' AND column_name IN ('TokenID','UserID','TokenHash','ExpiresAt','UsedAt','CreatedAt');
 SQL
 )"
 

@@ -18,4 +18,5 @@ public class User
 
     public ICollection<Order> Orders { get; set; } = new List<Order>();
     public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+    public ICollection<PasswordResetToken> PasswordResetTokens { get; set; } = new List<PasswordResetToken>();
 }
