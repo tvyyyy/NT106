@@ -234,6 +234,40 @@ namespace BobaShop.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BobaShop.Domain.Entities.PasswordResetToken", b =>
+                {
+                    b.Property<int>("TokenID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TokenID"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("TokenID");
+
+                    b.HasIndex("UserID", "CreatedAt");
+
+                    b.ToTable("PasswordResetTokens", (string)null);
+                });
+
             modelBuilder.Entity("BobaShop.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("ProductID")
@@ -537,6 +571,17 @@ namespace BobaShop.Persistence.Migrations
                     b.Navigation("Topping");
                 });
 
+            modelBuilder.Entity("BobaShop.Domain.Entities.PasswordResetToken", b =>
+                {
+                    b.HasOne("BobaShop.Domain.Entities.User", "User")
+                        .WithMany("PasswordResetTokens")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BobaShop.Domain.Entities.Product", b =>
                 {
                     b.HasOne("BobaShop.Domain.Entities.Category", "Category")
@@ -598,6 +643,8 @@ namespace BobaShop.Persistence.Migrations
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("PasswordResetTokens");
                 });
 
             modelBuilder.Entity("BobaShop.Domain.Entities.Voucher", b =>

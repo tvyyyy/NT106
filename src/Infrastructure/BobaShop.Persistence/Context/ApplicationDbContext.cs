@@ -17,7 +17,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
     public DbSet<OrderDetailTopping> OrderDetailToppings => Set<OrderDetailTopping>();
     public DbSet<Feedback> Feedbacks => Set<Feedback>();
-
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     base.OnModelCreating(modelBuilder);
