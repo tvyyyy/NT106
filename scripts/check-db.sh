@@ -34,7 +34,7 @@ SELECT count(*) FROM pg_constraint
 WHERE connamespace='public'::regnamespace AND contype='p';
 SQL
 )"
-expect "Khóa ngoại (FK)" 11 "$(q <<'SQL'
+expect "Khóa ngoại (FK)" 12 "$(q <<'SQL'
 SELECT count(*) FROM pg_constraint
 WHERE connamespace='public'::regnamespace AND contype='f';
 SQL

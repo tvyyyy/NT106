@@ -74,11 +74,11 @@ Trả `200 OK` khi thành công. Mã sai, hết hạn, đã dùng hoặc không 
 
 ## Trang chủ khách hàng
 
-### `GET /api/menu/categories`
+### `GET /api/categories`
 
 Trả `200 OK`, `data` là mảng `{ "categoryId": 1, "categoryName": "Trà sữa" }`.
 
-### `GET /api/menu/products?featured=true`
+### `GET /api/products?featured=true`
 
 Trả `200 OK`, `data` là mảng `{ "productId": 1, "categoryId": 1, "productName": "Trà sữa trân châu", "price": 35000, "imageUrl": null }`. Chỉ trả món đang bán. ERD hiện chưa có cờ đánh dấu món nổi bật; đến khi nhóm thêm cờ hoặc thống nhất quy tắc chọn món, `featured=true` trả danh sách món đang bán theo `productId` tăng dần để giao diện hiển thị ở khu vực nổi bật.
 
