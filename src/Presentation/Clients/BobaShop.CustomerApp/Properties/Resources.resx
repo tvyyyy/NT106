@@ -136,4 +136,7 @@
   <data name="Cach-pha-tra-sua-hoa-nhai-ngon-la-mieng" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Cach-pha-tra-sua-hoa-nhai-ngon-la-mieng.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="brand_cups" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\brand-cups.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
