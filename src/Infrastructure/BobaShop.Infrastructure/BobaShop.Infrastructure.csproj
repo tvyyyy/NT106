@@ -9,6 +9,7 @@
     <ProjectReference Include="..\BobaShop.Persistence\BobaShop.Persistence.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.12" />
+    <PackageReference Include="MailKit" Version="4.18.1" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -37,3 +37,8 @@ GET {{BobaShop.WebAPI_HostAddress}}/api/products?featured=true
 Accept: application/json
 
 ###
+
+GET {{BobaShop.WebAPI_HostAddress}}/api/promotions
+Accept: application/json
+
+###

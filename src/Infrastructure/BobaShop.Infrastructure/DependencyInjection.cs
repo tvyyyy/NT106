@@ -22,7 +22,25 @@ public static class DependencyInjection
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
         services.AddSingleton<IOtpGenerator, OtpGenerator>();
-        services.AddSingleton<IEmailSender, LogEmailSender>();
+        var emailSection = configuration.GetSection("Email");
+        var emailOptions = new EmailOptions
+        {
+            Provider = emailSection["Provider"] ?? "Smtp",
+            Host = emailSection["Host"] ?? "smtp.gmail.com",
+            Port = int.TryParse(emailSection["Port"], out var port) ? port : 587,
+            UseSslOnConnect = bool.TryParse(emailSection["UseSslOnConnect"], out var useSsl) && useSsl,
+            Username = emailSection["Username"] ?? string.Empty,
+            Password = emailSection["Password"] ?? string.Empty,
+            FromAddress = emailSection["FromAddress"] ?? string.Empty,
+            FromName = emailSection["FromName"] ?? "Boba Shop"
+        };
+        services.AddSingleton(emailOptions);
+        if (string.Equals(emailOptions.Provider, "Log", StringComparison.OrdinalIgnoreCase))
+            services.AddSingleton<IEmailSender, LogEmailSender>();
+        else if (string.Equals(emailOptions.Provider, "Smtp", StringComparison.OrdinalIgnoreCase))
+            services.AddSingleton<IEmailSender, SmtpEmailSender>();
+        else
+            throw new InvalidOperationException("Email:Provider chỉ nhận 'Smtp' hoặc 'Log'.");
         return services;
     }
 }
