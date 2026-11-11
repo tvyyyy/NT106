@@ -18,8 +18,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<OrderDetailTopping> OrderDetailToppings => Set<OrderDetailTopping>();
     public DbSet<Feedback> Feedbacks => Set<Feedback>();
     public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
-    public DbSet<DiningTable> DiningTables => Set<DiningTable>();
-    public DbSet<VoucherRedemption> VoucherRedemptions => Set<VoucherRedemption>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     base.OnModelCreating(modelBuilder);

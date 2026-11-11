@@ -1,12 +1,9 @@
-using BobaShop.Domain.Enums;
-
 namespace BobaShop.Domain.Entities;
 
 public class Voucher
 {
     public int VoucherID { get; set; }
     public string Code { get; set; } = string.Empty;   // sẽ đặt UNIQUE index
-    public DiscountType DiscountType { get; set; }
     public decimal DiscountValue { get; set; }
     public decimal MinOrderValue { get; set; }
     public decimal MaxDiscountAmount { get; set; }
@@ -16,5 +13,4 @@ public class Voucher
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<Order> Orders { get; set; } = new List<Order>();
-    public ICollection<VoucherRedemption> Redemptions { get; set; } = new List<VoucherRedemption>();
 }

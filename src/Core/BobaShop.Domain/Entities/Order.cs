@@ -11,11 +11,6 @@ public class Order
 
     public int? VoucherID { get; set; }             // nullable: đơn không bắt buộc có voucher
     public Voucher? Voucher { get; set; }
-    public int? TableID { get; set; }
-    public DiningTable? DiningTable { get; set; }
-    public long? PayOSOrderCode { get; set; }
-    public DateTime? PaidAt { get; set; }
-    public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Unpaid;
 
     public OrderType OrderType { get; set; }
     public decimal TotalAmount { get; set; }        // tổng tiền trước giảm
@@ -27,5 +22,4 @@ public class Order
 
     public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
-    public ICollection<VoucherRedemption> VoucherRedemptions { get; set; } = new List<VoucherRedemption>();
 }

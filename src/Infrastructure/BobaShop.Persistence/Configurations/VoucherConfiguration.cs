@@ -19,7 +19,6 @@ public class VoucherConfiguration : IEntityTypeConfiguration<Voucher>
         builder.HasKey(v => v.VoucherID);
 
         builder.Property(v => v.Code).IsRequired().HasMaxLength(DbConstraints.CodeMaxLength);
-        builder.Property(v => v.DiscountType).HasConversion<string>().HasMaxLength(DbConstraints.EnumStringMaxLength);
         builder.HasIndex(v => v.Code).IsUnique();   // mã giảm giá không được trùng
 
         builder.Property(v => v.DiscountValue).HasPrecision(DbConstraints.PriceTotalDigits, DbConstraints.PriceScale);

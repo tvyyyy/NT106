@@ -21,8 +21,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.PaymentMethod).HasConversion<string>().HasMaxLength(DbConstraints.EnumStringMaxLength);
         builder.Property(o => o.Status).HasConversion<string>().HasMaxLength(DbConstraints.EnumStringMaxLength)
                .HasDefaultValue(OrderStatus.Pending);
-        builder.Property(o => o.PaymentStatus).HasConversion<string>().HasMaxLength(DbConstraints.EnumStringMaxLength)
-               .HasDefaultValue(PaymentStatus.Unpaid);
 
         builder.Property(o => o.TotalAmount).HasPrecision(DbConstraints.PriceTotalDigits, DbConstraints.PriceScale);
         builder.Property(o => o.DiscountAmount).HasPrecision(DbConstraints.PriceTotalDigits, DbConstraints.PriceScale);
@@ -31,7 +29,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.HasIndex(o => new { o.UserID, o.CreatedAt });
         builder.HasIndex(o => o.Status);
-        builder.HasIndex(o => o.PayOSOrderCode).IsUnique().HasFilter("\"PayOSOrderCode\" IS NOT NULL");
 
         builder.HasOne(o => o.User)
                .WithMany(u => u.Orders)
@@ -41,12 +38,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasOne(o => o.Voucher)
                .WithMany(v => v.Orders)
                .HasForeignKey(o => o.VoucherID)
-               .IsRequired(false)
-               .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(o => o.DiningTable)
-               .WithMany(t => t.Orders)
-               .HasForeignKey(o => o.TableID)
                .IsRequired(false)
                .OnDelete(DeleteBehavior.Restrict);
     }

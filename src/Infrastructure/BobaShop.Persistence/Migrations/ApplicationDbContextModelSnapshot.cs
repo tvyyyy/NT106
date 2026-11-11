@@ -43,38 +43,6 @@ namespace BobaShop.Persistence.Migrations
                     b.ToTable("Categories", (string)null);
                 });
 
-            modelBuilder.Entity("BobaShop.Domain.Entities.DiningTable", b =>
-                {
-                    b.Property<int>("TableID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TableID"));
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("TableNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.HasKey("TableID");
-
-                    b.HasIndex("TableNumber")
-                        .IsUnique();
-
-                    b.ToTable("DiningTables", null, t =>
-                        {
-                            t.HasCheckConstraint("CK_DiningTables_Capacity", "\"Capacity\" > 0");
-                        });
-                });
-
             modelBuilder.Entity("BobaShop.Domain.Entities.Feedback", b =>
                 {
                     b.Property<int>("FeedbackID")
@@ -145,23 +113,10 @@ namespace BobaShop.Persistence.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.Property<DateTime?>("PaidAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long?>("PayOSOrderCode")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
-
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
-                        .HasDefaultValue("Unpaid");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -169,9 +124,6 @@ namespace BobaShop.Persistence.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
                         .HasDefaultValue("Pending");
-
-                    b.Property<int?>("TableID")
-                        .HasColumnType("integer");
 
                     b.Property<decimal>("TotalAmount")
                         .HasPrecision(18, 2)
@@ -185,13 +137,7 @@ namespace BobaShop.Persistence.Migrations
 
                     b.HasKey("OrderID");
 
-                    b.HasIndex("PayOSOrderCode")
-                        .IsUnique()
-                        .HasFilter("\"PayOSOrderCode\" IS NOT NULL");
-
                     b.HasIndex("Status");
-
-                    b.HasIndex("TableID");
 
                     b.HasIndex("VoucherID");
 
@@ -502,11 +448,6 @@ namespace BobaShop.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<string>("DiscountType")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
                     b.Property<decimal>("DiscountValue")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
@@ -547,40 +488,6 @@ namespace BobaShop.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BobaShop.Domain.Entities.VoucherRedemption", b =>
-                {
-                    b.Property<int>("RedemptionID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RedemptionID"));
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("RedeemedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW()");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("VoucherID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("RedemptionID");
-
-                    b.HasIndex("OrderID");
-
-                    b.HasIndex("UserID");
-
-                    b.HasIndex("VoucherID", "OrderID")
-                        .IsUnique();
-
-                    b.ToTable("VoucherRedemptions", (string)null);
-                });
-
             modelBuilder.Entity("BobaShop.Domain.Entities.Feedback", b =>
                 {
                     b.HasOne("BobaShop.Domain.Entities.Order", "Order")
@@ -610,11 +517,6 @@ namespace BobaShop.Persistence.Migrations
 
             modelBuilder.Entity("BobaShop.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("BobaShop.Domain.Entities.DiningTable", "DiningTable")
-                        .WithMany("Orders")
-                        .HasForeignKey("TableID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("BobaShop.Domain.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserID")
@@ -625,8 +527,6 @@ namespace BobaShop.Persistence.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("VoucherID")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("DiningTable");
 
                     b.Navigation("User");
 
@@ -704,41 +604,9 @@ namespace BobaShop.Persistence.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("BobaShop.Domain.Entities.VoucherRedemption", b =>
-                {
-                    b.HasOne("BobaShop.Domain.Entities.Order", "Order")
-                        .WithMany("VoucherRedemptions")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BobaShop.Domain.Entities.User", "User")
-                        .WithMany("VoucherRedemptions")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BobaShop.Domain.Entities.Voucher", "Voucher")
-                        .WithMany("Redemptions")
-                        .HasForeignKey("VoucherID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("User");
-
-                    b.Navigation("Voucher");
-                });
-
             modelBuilder.Entity("BobaShop.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("BobaShop.Domain.Entities.DiningTable", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("BobaShop.Domain.Entities.Order", b =>
@@ -746,8 +614,6 @@ namespace BobaShop.Persistence.Migrations
                     b.Navigation("Feedbacks");
 
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("VoucherRedemptions");
                 });
 
             modelBuilder.Entity("BobaShop.Domain.Entities.OrderDetail", b =>
@@ -779,15 +645,11 @@ namespace BobaShop.Persistence.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("PasswordResetTokens");
-
-                    b.Navigation("VoucherRedemptions");
                 });
 
             modelBuilder.Entity("BobaShop.Domain.Entities.Voucher", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("Redemptions");
                 });
 #pragma warning restore 612, 618
         }
