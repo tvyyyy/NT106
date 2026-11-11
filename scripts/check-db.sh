@@ -24,29 +24,41 @@ expect_fail() {
 }
 
 echo "== 1. Cấu trúc và ràng buộc =="
-expect "Số bảng" 11 "$(q <<'SQL'
+expect "Số bảng" 13 "$(q <<'SQL'
 SELECT count(*) FROM information_schema.tables
 WHERE table_schema='public' AND table_name <> '__EFMigrationsHistory';
 SQL
 )"
-expect "Khóa chính (PK, gồm bảng history)" 12 "$(q <<'SQL'
+expect "Khóa chính (PK, gồm bảng history)" 14 "$(q <<'SQL'
 SELECT count(*) FROM pg_constraint
 WHERE connamespace='public'::regnamespace AND contype='p';
 SQL
 )"
-expect "Khóa ngoại (FK)" 12 "$(q <<'SQL'
+expect "Khóa ngoại (FK)" 16 "$(q <<'SQL'
 SELECT count(*) FROM pg_constraint
 WHERE connamespace='public'::regnamespace AND contype='f';
 SQL
 )"
-expect "CHECK" 11 "$(q <<'SQL'
+expect "CHECK" 12 "$(q <<'SQL'
 SELECT count(*) FROM pg_constraint
 WHERE connamespace='public'::regnamespace AND contype='c';
 SQL
 )"
-expect "UNIQUE index" 9 "$(q <<'SQL'
+expect "UNIQUE index" 12 "$(q <<'SQL'
 SELECT count(*) FROM pg_indexes
 WHERE schemaname='public' AND indexdef LIKE 'CREATE UNIQUE%' AND indexname NOT LIKE 'PK\_%';
+SQL
+)"
+expect "DiningTables.TableNumber unique" 1 "$(q <<'SQL'
+SELECT count(*) FROM pg_indexes WHERE schemaname='public' AND indexname='IX_DiningTables_TableNumber' AND indexdef LIKE 'CREATE UNIQUE%';
+SQL
+)"
+expect "Orders.PayOSOrderCode unique có điều kiện" 1 "$(q <<'SQL'
+SELECT count(*) FROM pg_indexes WHERE schemaname='public' AND indexname='IX_Orders_PayOSOrderCode' AND indexdef LIKE 'CREATE UNIQUE%' AND indexdef LIKE '%WHERE%';
+SQL
+)"
+expect "VoucherRedemptions duy nhất voucher/đơn" 1 "$(q <<'SQL'
+SELECT count(*) FROM pg_indexes WHERE schemaname='public' AND indexname='IX_VoucherRedemptions_VoucherID_OrderID' AND indexdef LIKE 'CREATE UNIQUE%';
 SQL
 )"
 
