@@ -12,6 +12,8 @@ using Google.Cloud.Firestore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddSimpleConsole();
 
 // 1. PostgreSQL (nguồn dữ liệu chính). Mật khẩu nằm trong User Secrets
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -74,9 +76,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 if (!firebaseEnabled)
-{
-    app.Logger.LogWarning("Không tìm thấy serviceAccountKey.json: bỏ qua Firebase, api/firebase/* trả 503.");
-}
+    Console.WriteLine("Không tìm thấy serviceAccountKey.json: bỏ qua Firebase, api/firebase/* trả 503.");
 
 // 4. Development: tự Migrate + seed
 if (app.Environment.IsDevelopment())
