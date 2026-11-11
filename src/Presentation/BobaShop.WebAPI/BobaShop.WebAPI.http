@@ -1,13 +1,44 @@
 @BobaShop.WebAPI_HostAddress = http://localhost:5227
 
-POST {{BobaShop.WebAPI_HostAddress}}/api/firebase/register
+POST {{BobaShop.WebAPI_HostAddress}}/api/auth/register
 Content-Type: application/json
 
-{ "username": "demo", "email": "demo@example.com" }
+{ "fullName": "Nguyen Van A", "phone": "0901234567", "email": "a@example.com", "password": "Example123!" }
 
 ###
 
-GET {{BobaShop.WebAPI_HostAddress}}/api/firebase/users
+POST {{BobaShop.WebAPI_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "a@example.com", "password": "Example123!" }
+
+###
+
+POST {{BobaShop.WebAPI_HostAddress}}/api/auth/forgot-password
+Content-Type: application/json
+
+{ "email": "a@example.com" }
+
+###
+
+POST {{BobaShop.WebAPI_HostAddress}}/api/auth/reset-password
+Content-Type: application/json
+
+{ "email": "a@example.com", "otp": "012345", "newPassword": "NewExample123!" }
+
+###
+
+GET {{BobaShop.WebAPI_HostAddress}}/api/categories
+Accept: application/json
+
+###
+
+GET {{BobaShop.WebAPI_HostAddress}}/api/products?featured=true
+Accept: application/json
+
+###
+
+GET {{BobaShop.WebAPI_HostAddress}}/api/promotions
 Accept: application/json
 
 ###

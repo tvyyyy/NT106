@@ -10,6 +10,7 @@ public static class DbConstraints
     public const int CodeMaxLength = 50;
     public const int EnumStringMaxLength = 30;
     public const int NoteMaxLength = 500;
+    public const int TableNumberMaxLength = 20;
 
     public const int PriceTotalDigits = 18;
     public const int PriceScale = 2;
