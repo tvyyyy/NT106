@@ -1,4 +1,5 @@
 using BobaShop.ClientNetworkLogic;
+using BobaShop.ClientNetworkLogic.Helpers;
 using BobaShop.CustomerApp.Forms.Auth;
 using BobaShop.CustomerApp.Forms.Main;
 using BobaShop.CustomerApp.Services;
@@ -25,8 +26,8 @@ static class Program
         }
         catch (Exception ex)
         {
-            // Tạm thời: hiện nguyên lỗi lúc khởi động để dễ tìm nguyên nhân. Gỡ khi giao diện đã ổn định.
-            MessageBox.Show(ex.ToString(), "BobaShop - Lỗi khởi động", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            // Lỗi không lường trước: báo cho người dùng rồi thoát, thay vì để ứng dụng tắt đột ngột.
+            DialogHelper.ShowError(null, $"Ứng dụng gặp lỗi và cần đóng lại.\n\nChi tiết: {ex.Message}");
         }
     }
 
