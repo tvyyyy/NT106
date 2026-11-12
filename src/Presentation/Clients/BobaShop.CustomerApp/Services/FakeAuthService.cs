@@ -2,8 +2,7 @@ namespace BobaShop.CustomerApp.Services;
 
 /// <summary>
 /// Bản giả để dựng giao diện khi API chưa xong (theo mục 4 của Quy chuẩn). Dữ liệu chỉ nằm trong bộ nhớ,
-/// tắt ứng dụng là mất. Khi có API thật thì viết AuthService và ProfileService gọi ApiClient
-/// và đổi dòng khởi tạo trong Program.cs.
+/// tắt ứng dụng là mất. Bản thật là AuthService, Program.cs chọn bản nào theo tham số dòng lệnh.
 /// Lớp này đóng luôn vai service hồ sơ vì nó là nơi giữ danh sách tài khoản giả và biết ai đang đăng nhập.
 /// </summary>
 public sealed class FakeAuthService : IAuthService, IProfileService
@@ -15,31 +14,15 @@ public sealed class FakeAuthService : IAuthService, IProfileService
     /// <summary>Mã xác nhận cố định của bản giả, thay cho mã gửi qua email.</summary>
     public const string DemoResetCode = "123456";
 
-    /// <summary>Hạng mặc định của tài khoản vừa đăng ký.</summary>
-    private const string NewMemberTier = "Thành viên mới";
+    // Khớp tên vai trò server trả về trong phản hồi đăng nhập.
+    private const string CustomerRole = "Customer";
 
     private static readonly TimeSpan FakeNetworkDelay = TimeSpan.FromMilliseconds(600);
 
     private readonly Dictionary<string, FakeUser> _users = new(StringComparer.OrdinalIgnoreCase)
     {
-        [DemoEmail] = new FakeUser(
-            "Khách Demo",
-            DemoEmail,
-            "0901234567",
-            DemoPassword,
-            false,
-            new DateOnly(2004, 5, 20),
-            new DateTime(2026, 10, 1),
-            "Bạc"),
-        [LockedEmail] = new FakeUser(
-            "Khách Bị Khóa",
-            LockedEmail,
-            "0907654321",
-            DemoPassword,
-            true,
-            null,
-            new DateTime(2026, 10, 15),
-            NewMemberTier),
+        [DemoEmail] = new FakeUser("Khách Demo", DemoEmail, DemoPassword, false),
+        [LockedEmail] = new FakeUser("Khách Bị Khóa", LockedEmail, DemoPassword, true),
     };
 
     private readonly HashSet<string> _pendingResets = new(StringComparer.OrdinalIgnoreCase);
@@ -62,7 +45,7 @@ public sealed class FakeAuthService : IAuthService, IProfileService
         }
 
         _currentEmail = user.Email;
-        return LoginResult.Ok("fake-jwt-token", user.FullName, "Customer");
+        return LoginResult.Ok("fake-jwt-token", user.FullName, CustomerRole);
     }
 
     public async Task<AuthActionResult> RegisterAsync(
@@ -79,7 +62,7 @@ public sealed class FakeAuthService : IAuthService, IProfileService
             return AuthActionResult.Fail("Email này đã được đăng ký.");
         }
 
-        _users[email] = new FakeUser(fullName, email, phone, password, false, null, DateTime.Now, NewMemberTier);
+        _users[email] = new FakeUser(fullName, email, password, false);
         return AuthActionResult.Ok();
     }
 
@@ -122,16 +105,8 @@ public sealed class FakeAuthService : IAuthService, IProfileService
             throw new InvalidOperationException("Chưa có tài khoản nào đăng nhập.");
         }
 
-        return new CustomerProfile(user.FullName, user.Email, user.Phone, user.DateOfBirth, user.RegisteredAt, user.TierName);
+        return new CustomerProfile(user.FullName, user.Email, CustomerRole);
     }
 
-    private sealed record FakeUser(
-        string FullName,
-        string Email,
-        string Phone,
-        string Password,
-        bool IsLocked,
-        DateOnly? DateOfBirth,
-        DateTime RegisteredAt,
-        string TierName);
+    private sealed record FakeUser(string FullName, string Email, string Password, bool IsLocked);
 }

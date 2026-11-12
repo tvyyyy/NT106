@@ -5,14 +5,12 @@ namespace BobaShop.CustomerApp.Services;
 
 /// <summary>
 /// Service xác thực gọi Web API thật theo docs/api-contract-2026-11-09.md, dùng DTO của Application.
-/// Kiêm service hồ sơ ở mức tạm: hợp đồng API chưa có endpoint hồ sơ, nên hồ sơ chỉ gồm
-/// những gì phản hồi đăng nhập trả về (họ tên, email).
+/// Kiêm service hồ sơ: hợp đồng API chưa có endpoint hồ sơ, nên hồ sơ gồm đúng những gì
+/// phản hồi đăng nhập trả về (họ tên, email, vai trò).
 /// TODO: khi Ngân có SessionManager thì lưu token và thông tin người dùng vào đó thay vì giữ trong lớp này.
 /// </summary>
 public sealed class AuthService : IAuthService, IProfileService
 {
-    private const string DefaultTier = "Thành viên";
-
     private readonly ApiClient _apiClient;
     private AuthDtos.LoginUserResponse? _currentUser;
 
@@ -87,13 +85,6 @@ public sealed class AuthService : IAuthService, IProfileService
             throw new InvalidOperationException("Chưa có tài khoản nào đăng nhập.");
         }
 
-        // Số điện thoại, ngày sinh và ngày đăng ký chưa có API trả về nên để trống.
-        return Task.FromResult(new CustomerProfile(
-            _currentUser.FullName,
-            _currentUser.Email,
-            string.Empty,
-            null,
-            null,
-            DefaultTier));
+        return Task.FromResult(new CustomerProfile(_currentUser.FullName, _currentUser.Email, _currentUser.Role));
     }
 }

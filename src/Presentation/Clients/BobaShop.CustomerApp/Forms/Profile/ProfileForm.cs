@@ -9,30 +9,28 @@ using BobaShop.CustomerApp.Services;
 namespace BobaShop.CustomerApp.Forms.Profile;
 
 /// <summary>
-/// Hồ sơ khách hàng, mở khi bấm vào tên trên thanh đầu trang:
-/// họ tên, hạng thành viên, email, số điện thoại, tuổi và ngày đăng ký.
+/// Hồ sơ khách hàng, mở khi bấm vào tên trên thanh đầu trang. Chỉ hiển thị những gì Web API
+/// hiện trả về: họ tên, email và loại tài khoản.
 /// </summary>
 [DesignerCategory("Code")]
 public class ProfileForm : Form
 {
     private const int WindowWidth = 420;
-    private const int WindowHeight = 540;
+    private const int WindowHeight = 400;
     private const int SidePadding = 40;
     private const int AvatarSize = 88;
     private const int RowHeight = 44;
+    private const int RowCount = 2;
     private const string NotUpdatedText = "Chưa cập nhật";
 
     private readonly IProfileService _profileService;
 
     private readonly Panel _pnlAvatar;
     private readonly Label _lblName;
-    private readonly Label _lblTier;
     private readonly Label _lblStatus;
     private readonly Panel _pnlRows;
     private readonly Label _lblEmail;
-    private readonly Label _lblPhone;
-    private readonly Label _lblAge;
-    private readonly Label _lblRegisteredAt;
+    private readonly Label _lblRole;
     private readonly PrimaryButton _btnClose;
 
     private string _initials = string.Empty;
@@ -80,20 +78,7 @@ public class ProfileForm : Form
             AutoEllipsis = true,
             UseMnemonic = false,
         };
-        y += _lblName.Height + UiScale.Px(4);
-
-        _lblTier = new Label
-        {
-            AutoSize = true,
-            Font = AppFonts.BodyBold,
-            BackColor = AppColors.Primary,
-            ForeColor = AppColors.OnPrimary,
-            Padding = new Padding(UiScale.Px(12), UiScale.Px(4), UiScale.Px(12), UiScale.Px(4)),
-            Location = new Point(left, y),
-            UseMnemonic = false,
-            Visible = false,
-        };
-        y += AppFonts.BodyBold.Height + UiScale.Px(8) + UiScale.Px(20);
+        y += _lblName.Height + UiScale.Px(16);
 
         _lblStatus = new Label
         {
@@ -108,16 +93,14 @@ public class ProfileForm : Form
         // Bảng thông tin: nhãn bên trái, giá trị bên phải, mỗi dòng có đường kẻ mảnh bên dưới.
         _pnlRows = new Panel
         {
-            Size = new Size(contentWidth, UiScale.Px(RowHeight) * 4),
+            Size = new Size(contentWidth, UiScale.Px(RowHeight) * RowCount),
             Location = new Point(left, y),
             BackColor = AppColors.Background,
             Visible = false,
         };
         _pnlRows.Paint += PnlRows_Paint;
         _lblEmail = AddRow(0, "Email");
-        _lblPhone = AddRow(1, "Số điện thoại");
-        _lblAge = AddRow(2, "Tuổi");
-        _lblRegisteredAt = AddRow(3, "Ngày đăng ký");
+        _lblRole = AddRow(1, "Loại tài khoản");
 
         _btnClose = new PrimaryButton
         {
@@ -129,7 +112,6 @@ public class ProfileForm : Form
 
         Controls.Add(_pnlAvatar);
         Controls.Add(_lblName);
-        Controls.Add(_lblTier);
         Controls.Add(_lblStatus);
         Controls.Add(_pnlRows);
         Controls.Add(_btnClose);
@@ -144,16 +126,15 @@ public class ProfileForm : Form
         Shown += ProfileForm_Shown;
     }
 
-    /// <summary>Tính tuổi tròn theo ngày sinh, tính tới hôm nay.</summary>
-    private static int CalculateAge(DateOnly dateOfBirth, DateOnly today)
+    /// <summary>Đổi tên vai trò server trả về sang chữ hiển thị cho người dùng.</summary>
+    private static string GetRoleDisplayName(string? role)
     {
-        var age = today.Year - dateOfBirth.Year;
-        if (today < dateOfBirth.AddYears(age))
+        return role switch
         {
-            age--;
-        }
-
-        return Math.Max(0, age);
+            "Customer" => "Khách hàng",
+            "Admin" => "Quản lý",
+            _ => string.IsNullOrWhiteSpace(role) ? NotUpdatedText : role,
+        };
     }
 
     private Label AddRow(int index, string caption)
@@ -222,19 +203,8 @@ public class ProfileForm : Form
     private void ShowProfile(CustomerProfile profile)
     {
         SetName(profile.FullName);
-
-        _lblTier.Text = $"Hạng {profile.TierName}";
-        _lblTier.Location = new Point((ClientSize.Width - _lblTier.PreferredWidth) / 2, _lblTier.Top);
-        _lblTier.Visible = true;
-
         _lblEmail.Text = string.IsNullOrWhiteSpace(profile.Email) ? NotUpdatedText : profile.Email;
-        _lblPhone.Text = string.IsNullOrWhiteSpace(profile.Phone) ? NotUpdatedText : profile.Phone;
-        _lblAge.Text = profile.DateOfBirth is { } dateOfBirth
-            ? CalculateAge(dateOfBirth, DateOnly.FromDateTime(DateTime.Today)).ToString()
-            : NotUpdatedText;
-        _lblRegisteredAt.Text = profile.RegisteredAt is { } registeredAt
-            ? Formatter.Date(registeredAt)
-            : NotUpdatedText;
+        _lblRole.Text = GetRoleDisplayName(profile.Role);
 
         _lblStatus.Visible = false;
         _pnlRows.Visible = true;

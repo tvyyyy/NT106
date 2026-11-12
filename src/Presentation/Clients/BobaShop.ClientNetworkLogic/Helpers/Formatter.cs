@@ -25,10 +25,4 @@ public static class Formatter
         var first = char.ToUpperInvariant(words[0][0]).ToString();
         return words.Length == 1 ? first : first + char.ToUpperInvariant(words[^1][0]);
     }
-
-    /// <summary>Định dạng ngày kiểu Việt Nam, ví dụ "01/10/2026".</summary>
-    public static string Date(DateTime value)
-    {
-        return value.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-    }
 }

@@ -155,7 +155,7 @@ Số cột của lưới món tự tính theo bề rộng cửa sổ, sao cho m�
 
 ![Hình 3.9. Cửa sổ hồ sơ](images/ch3-ho-so.png)
 
-Cửa sổ hồ sơ hiển thị ảnh đại diện dạng chữ cái đầu, họ tên, hạng thành viên, email, số điện thoại, tuổi và ngày đăng ký. Trường nào chưa có dữ liệu thì hiển thị "Chưa cập nhật".
+Cửa sổ hồ sơ hiển thị ảnh đại diện dạng chữ cái đầu, họ tên, email và loại tài khoản (Khách hàng hoặc Quản lý). Đây là những thông tin Web API trả về khi đăng nhập; ứng dụng không hiển thị trường nào mà API chưa cung cấp.
 
 ## 3.7. Kết nối với Web API
 
@@ -187,7 +187,7 @@ Hình 3.10 chụp khi ứng dụng nối với Web API và PostgreSQL chạy tr�
 ## 3.8. Hạn chế và hướng phát triển
 
 - **Ảnh món.** API hiện trả `imageUrl` rỗng, nên các thẻ món dùng luân phiên hai ảnh có sẵn. Khi có ảnh từng món, `ProductGrid` sẽ tải theo `imageUrl`.
-- **Hồ sơ khách hàng.** Chưa có API hồ sơ. Khi nối server thật, hồ sơ chỉ có họ tên và email lấy từ phản hồi đăng nhập. Ngày sinh và hạng thành viên chưa có trong mô hình dữ liệu.
+- **Hồ sơ khách hàng.** Chưa có API hồ sơ riêng, nên hồ sơ chỉ gồm họ tên, email và vai trò lấy từ phản hồi đăng nhập. Số điện thoại, ngày sinh và hạng thành viên sẽ bổ sung khi mô hình dữ liệu và API hỗ trợ.
 - **Phiên đăng nhập.** Token đang được giữ trong `AuthService` của client và mất khi tắt ứng dụng. Phần lưu phiên (`SessionManager`) sẽ thay thế cách này.
 - **Giỏ hàng.** Biểu tượng giỏ hàng mở màn giỏ hàng có sẵn, nhưng chưa có chức năng thêm món từ thẻ món, nên số món trên huy hiệu luôn bằng 0.
 - **Món nổi bật.** ERD chưa có cờ đánh dấu món nổi bật, nên trang chủ lấy 8 món đầu danh sách.
