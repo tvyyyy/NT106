@@ -141,10 +141,12 @@ public class AuthFormBase : Form
             Margin = new Padding(0, 0, 0, Px(2)),
         };
 
+        // Dòng lỗi tự cao lên khi thông báo dài phải xuống hàng (ví dụ quy tắc mật khẩu).
         lblError = new Label
         {
-            AutoSize = false,
-            Size = new Size(ContentWidth + Px(LabelTextInset), Px(20)),
+            AutoSize = true,
+            MinimumSize = new Size(ContentWidth + Px(LabelTextInset), Px(20)),
+            MaximumSize = new Size(ContentWidth + Px(LabelTextInset), 0),
             Font = AppFonts.Caption,
             ForeColor = AppColors.Error,
             Margin = new Padding(-Px(LabelTextInset), 0, 0, Px(AppSpacing.Spacing4)),
