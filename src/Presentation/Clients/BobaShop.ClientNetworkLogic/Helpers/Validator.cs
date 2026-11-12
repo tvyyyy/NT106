@@ -13,15 +13,16 @@ public static partial class Validator
     public const int FullNameMaxLength = 100;
     public const int EmailMaxLength = 150;
 
-    // TODO: chốt với Vy cho khớp quy tắc phía server.
-    public const int PasswordMinLength = 6;
+    // Khớp AuthValidation.StrongPassword phía server: ít nhất 8 ký tự,
+    // có chữ hoa, chữ thường, chữ số và ký tự đặc biệt.
+    public const int PasswordMinLength = 8;
     public const int OtpLength = 6;
 
     [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
     private static partial Regex EmailRegex();
 
-    // Số di động Việt Nam: 10 chữ số, bắt đầu bằng 0.
-    [GeneratedRegex(@"^0\d{9}$")]
+    // Khớp AuthValidation.ValidPhone phía server: bắt đầu bằng 0, tổng cộng 10 hoặc 11 chữ số.
+    [GeneratedRegex(@"^0[0-9]{9,10}$")]
     private static partial Regex PhoneRegex();
 
     [GeneratedRegex(@"^\d{6}$")]
@@ -68,7 +69,7 @@ public static partial class Validator
         }
 
         var phone = value.Replace(" ", string.Empty);
-        return PhoneRegex().IsMatch(phone) ? null : "Số điện thoại gồm 10 chữ số, bắt đầu bằng 0.";
+        return PhoneRegex().IsMatch(phone) ? null : "Số điện thoại gồm 10 hoặc 11 chữ số, bắt đầu bằng 0.";
     }
 
     /// <summary>Dùng khi đặt mật khẩu mới (đăng ký, đặt lại). Đăng nhập chỉ cần Required.</summary>
@@ -79,9 +80,15 @@ public static partial class Validator
             return "Vui lòng nhập mật khẩu.";
         }
 
-        return value.Length < PasswordMinLength
-            ? $"Mật khẩu phải có ít nhất {PasswordMinLength} ký tự."
-            : null;
+        var isStrong = value.Length >= PasswordMinLength
+            && value.Any(char.IsAsciiLetterUpper)
+            && value.Any(char.IsAsciiLetterLower)
+            && value.Any(char.IsAsciiDigit)
+            && value.Any(character => !char.IsAsciiLetterOrDigit(character));
+
+        return isStrong
+            ? null
+            : $"Mật khẩu cần ít nhất {PasswordMinLength} ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.";
     }
 
     public static string? ConfirmPassword(string? password, string? confirmation)
