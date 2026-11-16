@@ -60,7 +60,7 @@ public class HomePage : Panel
         _banner.SetImages(new[]
         {
             Properties.Resources.ResourceManager.GetObject(BrandCupsResourceName) as Image,
-            Properties.Resources.download__1_,
+            Image.FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "download1.jpg")),
             Properties.Resources.Cach_pha_tra_sua_hoa_nhai_ngon_la_mieng,
         });
 

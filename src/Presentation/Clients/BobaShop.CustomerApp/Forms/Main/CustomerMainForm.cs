@@ -1,4 +1,8 @@
+using System;
 using System.ComponentModel;
+using System.Drawing;
+using System.IO; // Bổ sung thư viện để dùng Path.Combine
+using System.Windows.Forms;
 using BobaShop.ClientNetworkLogic.Controls;
 using BobaShop.ClientNetworkLogic.Helpers;
 using BobaShop.ClientNetworkLogic.Theme;
@@ -73,9 +77,10 @@ public class CustomerMainForm : Form
         };
         _pnlHeader.Paint += PnlHeader_Paint;
 
+        // ĐÃ SỬA LỖI: Thêm Image = và dấu phẩy ở cuối
         var picLogo = new PictureBox
         {
-            Image = Properties.Resources.download,
+            Image = Image.FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "download1.jpg")),
             SizeMode = PictureBoxSizeMode.Zoom,
             Size = new Size(UiScale.Px(LogoSize), UiScale.Px(LogoSize)),
             Location = new Point(UiScale.Px(PagePadding), UiScale.Px((HeaderHeight - LogoSize) / 2)),

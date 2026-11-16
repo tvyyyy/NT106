@@ -63,59 +63,19 @@ namespace BobaShop.CustomerApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap brand_cups {
+            get {
+                object obj = ResourceManager.GetObject("brand_cups", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Cach_pha_tra_sua_hoa_nhai_ngon_la_mieng {
             get {
                 object obj = ResourceManager.GetObject("Cach-pha-tra-sua-hoa-nhai-ngon-la-mieng", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap download {
-            get {
-                object obj = ResourceManager.GetObject("download", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap download__1_ {
-            get {
-                object obj = ResourceManager.GetObject("download (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap download1 {
-            get {
-                object obj = ResourceManager.GetObject("download1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap fendy_photos__images__assets {
-            get {
-                object obj = ResourceManager.GetObject("fendy photos, images, assets", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Gemini_Generated_Image_7mrdbf7mrdbf7mrd__1_ {
-            get {
-                object obj = ResourceManager.GetObject("Gemini_Generated_Image_7mrdbf7mrdbf7mrd (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
