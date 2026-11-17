@@ -3,6 +3,8 @@ using BobaShop.Persistence.Context;
 using BobaShop.Persistence.Seed;
 using BobaShop.Infrastructure;
 using BobaShop.Application.Auth;
+using BobaShop.Application.Recommendations;
+using BobaShop.WebAPI.Endpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -18,6 +20,10 @@ builder.Logging.AddSimpleConsole();
 // 1. PostgreSQL (nguồn dữ liệu chính). Mật khẩu nằm trong User Secrets
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Thiếu ConnectionStrings:DefaultConnection.");
+var recommendationOptions = builder.Configuration.GetSection(RecommendationOptions.SectionName).Get<RecommendationOptions>()
+    ?? new RecommendationOptions();
+recommendationOptions.Validate();
+builder.Services.AddSingleton(recommendationOptions);
 builder.Services.AddPersistence(connectionString);
 builder.Services.AddInfrastructure(builder.Configuration);
 var jwtSection = builder.Configuration.GetSection("Jwt");
@@ -103,5 +109,6 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapRecommendationEndpoints();
 
 app.Run();

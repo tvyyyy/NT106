@@ -333,6 +333,11 @@ namespace BobaShop.Persistence.Migrations
                     b.Property<int>("CategoryID")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
                     b.Property<string>("ImageURL")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");

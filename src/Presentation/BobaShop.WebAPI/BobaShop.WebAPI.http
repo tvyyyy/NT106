@@ -1,4 +1,6 @@
 @BobaShop.WebAPI_HostAddress = http://localhost:5227
+@token = REPLACE_WITH_LOGIN_TOKEN
+@userId = 1
 
 POST {{BobaShop.WebAPI_HostAddress}}/api/auth/register
 Content-Type: application/json
@@ -40,5 +42,42 @@ Accept: application/json
 
 GET {{BobaShop.WebAPI_HostAddress}}/api/promotions
 Accept: application/json
+
+###
+
+GET {{BobaShop.WebAPI_HostAddress}}/api/recommendations/popular?days=7&topN=8
+Accept: application/json
+
+###
+
+GET {{BobaShop.WebAPI_HostAddress}}/api/recommendations/popular?days=30&topN=8
+Accept: application/json
+
+###
+
+GET {{BobaShop.WebAPI_HostAddress}}/api/recommendations/top-rated?topN=8
+Accept: application/json
+
+###
+
+GET {{BobaShop.WebAPI_HostAddress}}/api/recommendations/new?topN=8
+Accept: application/json
+
+###
+
+# userId must match the JWT sub claim; omit userId to use the signed-in user.
+GET {{BobaShop.WebAPI_HostAddress}}/api/recommendations/for-you?userId={{userId}}&topN=8
+Authorization: Bearer {{token}}
+Accept: application/json
+
+###
+
+# Expected: 400 (topN out of range).
+GET {{BobaShop.WebAPI_HostAddress}}/api/recommendations/popular?topN=0
+
+###
+
+# Expected: 401 (missing JWT).
+GET {{BobaShop.WebAPI_HostAddress}}/api/recommendations/for-you
 
 ###

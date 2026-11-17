@@ -18,6 +18,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.Price).HasPrecision(DbConstraints.PriceTotalDigits, DbConstraints.PriceScale);
         builder.Property(p => p.ImageURL).HasMaxLength(DbConstraints.UrlMaxLength);
         builder.Property(p => p.IsAvailable).HasDefaultValue(true);
+        builder.Property(p => p.CreatedAt).HasDefaultValueSql("NOW()");
 
         builder.HasIndex(p => new { p.CategoryID, p.ProductName }).IsUnique();
 

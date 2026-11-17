@@ -11,6 +11,7 @@ public class Product
     public decimal Price { get; set; }
     public string? ImageURL { get; set; }           // có thể chưa có ảnh
     public bool IsAvailable { get; set; } = true;  // false = ẩn món khi hết hàng
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
