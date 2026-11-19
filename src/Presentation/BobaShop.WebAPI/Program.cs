@@ -1,6 +1,7 @@
 using BobaShop.Persistence;
 using BobaShop.Persistence.Context;
 using BobaShop.Persistence.Seed;
+using BobaShop.Persistence.Seeding;
 using BobaShop.Infrastructure;
 using BobaShop.Application.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,7 +12,13 @@ using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+// Tham số riêng của dữ liệu demo hệ khuyến nghị: dotnet run -- --seed hoặc --clear-seed (chỉ ở Development).
+// Tách ra trước khi đưa args cho builder để cấu hình command line không hiểu nhầm.
+const string SeedArgument = "--seed";
+const string ClearSeedArgument = "--clear-seed";
+var runSeed = args.Contains(SeedArgument);
+var runClearSeed = args.Contains(ClearSeedArgument);
+var builder = WebApplication.CreateBuilder(args.Where(a => a is not SeedArgument and not ClearSeedArgument).ToArray());
 builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole();
 
@@ -85,6 +92,22 @@ if (app.Environment.IsDevelopment())
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await db.Database.MigrateAsync();
     await DbSeeder.SeedAsync(db, app.Configuration, scope.ServiceProvider.GetRequiredService<IPasswordHasher>());
+
+    if (runClearSeed)
+        app.Logger.LogInformation("Đã xóa dữ liệu seed. {Summary}", await DataSeeder.ClearSeedAsync(db));
+    if (runSeed)
+    {
+        // Mật khẩu chung của tài khoản seed đặt trong User Secrets, giống AdminSeed: không commit vào repo.
+        var seedPassword = app.Configuration["SeedData:Password"];
+        if (string.IsNullOrWhiteSpace(seedPassword))
+            throw new InvalidOperationException("--seed cần SeedData:Password trong User Secrets.");
+        app.Logger.LogInformation("Dữ liệu seed: {Summary}",
+            await DataSeeder.SeedAsync(db, scope.ServiceProvider.GetRequiredService<IPasswordHasher>(), seedPassword));
+    }
+}
+else if (runSeed || runClearSeed)
+{
+    app.Logger.LogWarning("Bỏ qua --seed/--clear-seed: chỉ chạy được ở môi trường Development.");
 }
 
 // 5. Middleware pipeline
