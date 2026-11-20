@@ -3,6 +3,7 @@ using BobaShop.ClientNetworkLogic.Controls;
 using BobaShop.ClientNetworkLogic.Helpers;
 using BobaShop.ClientNetworkLogic.Theme;
 using BobaShop.CustomerApp.Controls;
+using BobaShop.CustomerApp.Forms.Cart;
 using BobaShop.CustomerApp.Forms.Home;
 using BobaShop.CustomerApp.Forms.Menu;
 using BobaShop.CustomerApp.Forms.Profile;
@@ -12,7 +13,7 @@ namespace BobaShop.CustomerApp.Forms.Main;
 
 /// <summary>
 /// Khung chính của ứng dụng khách: thanh đầu trang (logo, điều hướng, ô tìm kiếm, đăng xuất)
-/// và vùng nội dung hiển thị một trang tại một thời điểm (Trang chủ, Thực đơn).
+/// và vùng nội dung hiển thị một trang tại một thời điểm (Trang chủ, Thực đơn, Chi tiết món, Giỏ hàng).
 /// Giao diện dựng bằng code, kích thước viết theo pixel ở 100% rồi nhân tỉ lệ màn hình qua UiScale.Px.
 /// </summary>
 [DesignerCategory("Code")]
@@ -38,11 +39,21 @@ public class CustomerMainForm : Form
     private readonly Panel _pnlPages;
     private readonly HomePage _homePage;
     private readonly MenuPage _menuPage;
+    private readonly ProductDetailPage _detailPage;
+    private readonly CartPage _cartPage;
     private readonly CartButton _btnCart;
 
+    // Giỏ hàng của phiên đăng nhập này, dùng chung cho màn chi tiết món, nút giỏ và trang giỏ hàng.
+    private readonly CartService _cart = new();
+
     // Trang đang hiển thị và mục điều hướng ứng với nó (để vẽ vạch xanh bên dưới).
+    // Trang giỏ hàng không thuộc mục điều hướng nào nên mục điều hướng có thể null.
     private Control _activePage;
-    private LinkLabel _activeNavLink;
+    private LinkLabel? _activeNavLink;
+
+    // Trang mở màn chi tiết món, để nút "Quay lại" trở về đúng chỗ.
+    private Control _detailReturnPage;
+    private LinkLabel? _detailReturnNavLink;
 
     public CustomerMainForm(
         LoginResult session,
@@ -125,11 +136,17 @@ public class CustomerMainForm : Form
 
         _homePage = new HomePage(menuService, promotionService) { Dock = DockStyle.Fill };
         _menuPage = new MenuPage(menuService) { Dock = DockStyle.Fill, Visible = false };
+        _detailPage = new ProductDetailPage(menuService, _cart) { Dock = DockStyle.Fill, Visible = false };
+        _cartPage = new CartPage(_cart) { Dock = DockStyle.Fill, Visible = false };
         _pnlPages.Controls.Add(_homePage);
         _pnlPages.Controls.Add(_menuPage);
+        _pnlPages.Controls.Add(_detailPage);
+        _pnlPages.Controls.Add(_cartPage);
 
         _activePage = _homePage;
         _activeNavLink = _lnkHome;
+        _detailReturnPage = _menuPage;
+        _detailReturnNavLink = _lnkMenu;
 
         // Thêm panel Fill trước, panel Top sau để thanh đầu trang được dock trước.
         Controls.Add(_pnlPages);
@@ -144,6 +161,12 @@ public class CustomerMainForm : Form
         _lnkLogout.LinkClicked += LnkLogout_LinkClicked;
         _userChip.Click += UserChip_Click;
         _homePage.ViewAllRequested += (_, _) => ShowPage(_menuPage, _lnkMenu);
+        _homePage.ProductClicked += (_, e) => OpenProduct(e);
+        _menuPage.ProductClicked += (_, e) => OpenProduct(e);
+        _detailPage.BackRequested += (_, _) => ShowPage(_detailReturnPage, _detailReturnNavLink);
+        _detailPage.ViewCartRequested += (_, _) => ShowPage(_cartPage, null);
+        _cartPage.BrowseMenuRequested += (_, _) => ShowPage(_menuPage, _lnkMenu);
+        _cart.Changed += (_, _) => _btnCart.Count = _cart.TotalQuantity;
         _txtSearch.TextChanged += TxtSearch_TextChanged;
         Shown += CustomerMainForm_Shown;
 
@@ -175,11 +198,26 @@ public class CustomerMainForm : Form
         // Hai trang tự bắt lỗi tải dữ liệu của mình và báo ngay trên trang.
         var homeTask = _homePage.LoadAsync();
         var menuTask = _menuPage.LoadAsync();
+        var toppingTask = _detailPage.LoadToppingsAsync();
         await homeTask;
         await menuTask;
+        await toppingTask;
     }
 
-    private void ShowPage(Control page, LinkLabel navLink)
+    /// <summary>Mở màn chi tiết của món vừa bấm, nhớ trang hiện tại để nút "Quay lại" trở về.</summary>
+    private void OpenProduct(ProductClickedEventArgs e)
+    {
+        if (!ReferenceEquals(_activePage, _detailPage))
+        {
+            _detailReturnPage = _activePage;
+            _detailReturnNavLink = _activeNavLink;
+        }
+
+        _detailPage.ShowProduct(e.Product, e.Image);
+        ShowPage(_detailPage, _detailReturnNavLink);
+    }
+
+    private void ShowPage(Control page, LinkLabel? navLink)
     {
         if (ReferenceEquals(_activePage, page))
         {
@@ -241,6 +279,12 @@ public class CustomerMainForm : Form
         e.Graphics.DrawLine(pen, 0, y, _pnlHeader.ClientSize.Width, y);
 
         // Vạch xanh dưới mục điều hướng đang mở, để người dùng biết mình đang ở trang nào.
+        // Trang giỏ hàng không thuộc mục nào nên không vẽ vạch.
+        if (_activeNavLink is null)
+        {
+            return;
+        }
+
         var indicatorHeight = UiScale.Px(ActiveIndicatorHeight);
         using var indicator = new SolidBrush(AppColors.Primary);
         e.Graphics.FillRectangle(
@@ -253,9 +297,7 @@ public class CustomerMainForm : Form
 
     private void BtnCart_Click(object? sender, EventArgs e)
     {
-        // Màn giỏ hàng hiện có của Ngân.
-        using var cartForm = new GH();
-        cartForm.ShowDialog(this);
+        ShowPage(_cartPage, null);
     }
 
     private void UserChip_Click(object? sender, EventArgs e)

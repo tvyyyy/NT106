@@ -32,6 +32,16 @@ public sealed class FakeMenuService : IMenuService
         new MenuProduct(12, 1, "Sữa tươi trân châu đường đen", 42000m, null),
     };
 
+    // Khớp ba topping mặc định trong DbSeeder phía server, thêm vài món để màn chi tiết có nhiều lựa chọn.
+    private static readonly IReadOnlyList<MenuTopping> Toppings = new[]
+    {
+        new MenuTopping(1, "Trân châu đen", 5000m),
+        new MenuTopping(2, "Thạch dừa", 5000m),
+        new MenuTopping(3, "Pudding", 7000m),
+        new MenuTopping(4, "Trân châu trắng", 6000m),
+        new MenuTopping(5, "Kem cheese", 10000m),
+    };
+
     public async Task<IReadOnlyList<MenuCategory>> GetCategoriesAsync(CancellationToken cancellationToken = default)
     {
         await Task.Delay(FakeNetworkDelay, cancellationToken);
@@ -50,5 +60,11 @@ public sealed class FakeMenuService : IMenuService
         // nên bản giả cũng làm vậy và trang chủ tự giới hạn số món hiển thị.
         await Task.Delay(FakeNetworkDelay, cancellationToken);
         return Products;
+    }
+
+    public async Task<IReadOnlyList<MenuTopping>> GetToppingsAsync(CancellationToken cancellationToken = default)
+    {
+        await Task.Delay(FakeNetworkDelay, cancellationToken);
+        return Toppings;
     }
 }

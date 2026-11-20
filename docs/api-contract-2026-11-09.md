@@ -86,6 +86,10 @@ Trả `200 OK`, `data` là mảng `{ "productId": 1, "categoryId": 1, "productNa
 
 Trả danh sách banner ưu đãi được tạo từ voucher đang hoạt động, còn lượt sử dụng và chưa hết hạn. `data` gồm `{ "promotionId": 1, "title": "Ưu đãi BOBA10", "description": "Giảm 10% cho đơn từ 50000đ. Nhập mã BOBA10 khi đặt món.", "code": "BOBA10", "expiresAt": "2026-12-31T00:00:00Z" }`. Nếu chưa có voucher hợp lệ, trả mảng rỗng.
 
+### `GET /api/toppings`
+
+Trả `200 OK`, `data` là mảng `{ "toppingId": 1, "toppingName": "Trân châu đen", "price": 5000 }`. Chỉ trả topping đang bán, theo `toppingId` tăng dần. Màn chi tiết món dùng danh sách này để khách chọn topping.
+
 ## Cấu hình email trong Development
 
 Mặc định `appsettings.Development.json` chọn `Email:Provider=Log` để demo OTP trong log. Để gửi Gmail thật, đặt `Email:Provider=Smtp` qua User Secrets rồi lưu `Email:Username`, `Email:Password` (Google App Password) và `Email:FromAddress` bằng User Secrets. Không commit các giá trị này. SMTP dùng `smtp.gmail.com:587` với STARTTLS.

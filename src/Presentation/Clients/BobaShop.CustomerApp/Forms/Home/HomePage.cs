@@ -84,6 +84,7 @@ public class HomePage : Panel
         _lnkViewAll.LinkClicked += (_, _) => ViewAllRequested?.Invoke(this, EventArgs.Empty);
 
         _grid = new ProductGrid();
+        _grid.ProductClicked += (_, e) => ProductClicked?.Invoke(this, e);
         _footer = new PageFooter();
 
         Controls.Add(_banner);
@@ -101,6 +102,9 @@ public class HomePage : Panel
 
     /// <summary>Người dùng bấm "Xem tất cả thực đơn". CustomerMainForm chuyển sang trang Thực đơn.</summary>
     public event EventHandler? ViewAllRequested;
+
+    /// <summary>Khách bấm vào một món nổi bật. CustomerMainForm mở màn chi tiết món.</summary>
+    public event EventHandler<ProductClickedEventArgs>? ProductClicked;
 
     /// <summary>Tải khuyến mãi và món nổi bật. Lỗi phần nào thì báo ở phần đó, không ảnh hưởng phần còn lại.</summary>
     public async Task LoadAsync()
