@@ -10,4 +10,7 @@ public interface IMenuService
 
     /// <summary>Danh sách món hiển thị ở khu vực nổi bật của trang chủ.</summary>
     Task<IReadOnlyList<MenuProduct>> GetFeaturedProductsAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>Topping đang bán, để khách chọn ở màn chi tiết món.</summary>
+    Task<IReadOnlyList<MenuTopping>> GetToppingsAsync(CancellationToken cancellationToken = default);
 }

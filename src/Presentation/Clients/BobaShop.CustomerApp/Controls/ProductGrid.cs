@@ -34,6 +34,9 @@ public class ProductGrid : FlowLayoutPanel
     /// </summary>
     public int HorizontalInset => UiScale.Px(CardGap) / 2;
 
+    /// <summary>Khách bấm vào một thẻ món.</summary>
+    public event EventHandler<ProductClickedEventArgs>? ProductClicked;
+
     public void SetProducts(IEnumerable<MenuProduct> products)
     {
         // TODO: khi API trả imageUrl thật thì tải ảnh theo từng món. Hiện mọi món đều chưa có ảnh
@@ -57,12 +60,21 @@ public class ProductGrid : FlowLayoutPanel
         foreach (var product in products)
         {
             var card = new ProductCard(product, defaultImages[index % defaultImages.Length]);
+            card.Click += Card_Click;
             _cards.Add(card);
             Controls.Add(card);
             index++;
         }
 
         ResumeLayout(false);
+    }
+
+    private void Card_Click(object? sender, EventArgs e)
+    {
+        if (sender is ProductCard card)
+        {
+            ProductClicked?.Invoke(this, new ProductClickedEventArgs(card.Product, card.Image));
+        }
     }
 
     /// <summary>Hiện các món thỏa điều kiện, ẩn các món còn lại. Trả về số món đang hiện.</summary>

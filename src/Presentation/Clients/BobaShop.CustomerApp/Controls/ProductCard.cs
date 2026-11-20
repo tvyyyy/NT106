@@ -7,7 +7,10 @@ using BobaShop.CustomerApp.Services;
 
 namespace BobaShop.CustomerApp.Controls;
 
-/// <summary>Thẻ một món trên trang chủ: ảnh ở trên, tên món và giá ở dưới.</summary>
+/// <summary>
+/// Thẻ một món trên trang chủ và trang Thực đơn: ảnh ở trên, tên món và giá ở dưới.
+/// Bấm vào thẻ để mở màn chi tiết món; rê chuột thì viền chuyển màu chủ đạo.
+/// </summary>
 [DesignerCategory("Code")]
 public class ProductCard : Control
 {
@@ -21,6 +24,7 @@ public class ProductCard : Control
 
     private readonly Image? _image;
     private Bitmap? _imageCache;
+    private bool _isHovered;
 
     public ProductCard(MenuProduct product, Image? image)
     {
@@ -34,10 +38,28 @@ public class ProductCard : Control
             | ControlStyles.ResizeRedraw,
             true);
         BackColor = AppColors.Surface;
+        Cursor = Cursors.Hand;
         TabStop = false;
     }
 
     public MenuProduct Product { get; }
+
+    /// <summary>Ảnh đang hiện trên thẻ, để màn chi tiết và giỏ hàng dùng đúng ảnh này.</summary>
+    public Image? Image => _image;
+
+    protected override void OnMouseEnter(EventArgs e)
+    {
+        base.OnMouseEnter(e);
+        _isHovered = true;
+        Invalidate();
+    }
+
+    protected override void OnMouseLeave(EventArgs e)
+    {
+        base.OnMouseLeave(e);
+        _isHovered = false;
+        Invalidate();
+    }
 
     protected override void OnResize(EventArgs e)
     {
@@ -95,7 +117,9 @@ public class ProductCard : Control
         graphics.DrawString(Product.ProductName, AppFonts.BodyBold, nameBrush, nameBounds, nameFormat);
         graphics.DrawString(Formatter.Currency(Product.Price), AppFonts.Heading, priceBrush, padding, priceTop);
 
-        using var border = new Pen(AppColors.Divider);
+        // Rê chuột thì viền đậm màu chủ đạo để khách biết thẻ bấm được.
+        using var border = new Pen(_isHovered ? AppColors.Primary : AppColors.Divider, _isHovered ? UiScale.Px(2) : 1);
+        border.Alignment = PenAlignment.Inset;
         graphics.DrawRectangle(border, 0, 0, Width - 1, Height - 1);
     }
 

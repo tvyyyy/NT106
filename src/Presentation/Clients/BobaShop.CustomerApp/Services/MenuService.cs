@@ -39,6 +39,19 @@ public sealed class MenuService : IMenuService
         return GetProductListAsync("api/products?featured=true", cancellationToken);
     }
 
+    public async Task<IReadOnlyList<MenuTopping>> GetToppingsAsync(CancellationToken cancellationToken = default)
+    {
+        var result = await _apiClient.GetAsync<List<HomeDtos.ToppingDto>>("api/toppings", ct: cancellationToken);
+        if (!result.Success)
+        {
+            throw new InvalidOperationException(result.Message);
+        }
+
+        return (result.Data ?? new List<HomeDtos.ToppingDto>())
+            .Select(topping => new MenuTopping(topping.ToppingId, topping.ToppingName, topping.Price))
+            .ToList();
+    }
+
     private async Task<IReadOnlyList<MenuProduct>> GetProductListAsync(string route, CancellationToken cancellationToken)
     {
         var result = await _apiClient.GetAsync<List<HomeDtos.ProductDto>>(route, ct: cancellationToken);

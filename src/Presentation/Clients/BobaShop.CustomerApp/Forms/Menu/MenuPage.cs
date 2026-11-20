@@ -63,6 +63,7 @@ public class MenuPage : Panel
         };
 
         _grid = new ProductGrid();
+        _grid.ProductClicked += (_, e) => ProductClicked?.Invoke(this, e);
 
         Controls.Add(_lblTitle);
         Controls.Add(_flpCategories);
@@ -72,6 +73,9 @@ public class MenuPage : Panel
         Resize += (_, _) => LayoutContent();
         LayoutContent();
     }
+
+    /// <summary>Khách bấm vào một món. CustomerMainForm mở màn chi tiết món.</summary>
+    public event EventHandler<ProductClickedEventArgs>? ProductClicked;
 
     /// <summary>Tải danh mục và toàn bộ món.</summary>
     public async Task LoadAsync()

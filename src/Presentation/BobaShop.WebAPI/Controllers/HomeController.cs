@@ -27,6 +27,14 @@ public class HomeController(ApplicationDbContext db) : ControllerBase
         return Ok(ApiResponse<IReadOnlyList<ProductDto>>.Ok("Lấy danh sách sản phẩm thành công.", data));
     }
 
+    [HttpGet("toppings")]
+    public async Task<IActionResult> Toppings(CancellationToken ct)
+    {
+        var data = await db.Toppings.AsNoTracking().Where(t => t.IsAvailable).OrderBy(t => t.ToppingID)
+            .Select(t => new ToppingDto(t.ToppingID, t.ToppingName, t.Price)).ToListAsync(ct);
+        return Ok(ApiResponse<IReadOnlyList<ToppingDto>>.Ok("Lấy danh sách topping thành công.", data));
+    }
+
     [HttpGet("promotions")]
     public async Task<IActionResult> Promotions(CancellationToken ct)
     {
